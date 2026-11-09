@@ -1,0 +1,10 @@
+# Maven build output
+target/
+*.class
+
+# IDE
+.idea/
+*.iml
+.classpath
+.project
+.settings/
