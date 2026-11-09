@@ -6,6 +6,7 @@ package com.bits.hr;
  * Calculates an employee's remaining leave balance and the amount payable
  * when the remaining balance is encashed.
  */
+// CI trigger verification - Divyansh Jha - BITS ID 2024SL70022
 public class LeaveCalculator {
 
     private static final int WORKING_DAYS_PER_MONTH = 30;
