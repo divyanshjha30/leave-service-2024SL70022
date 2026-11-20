@@ -32,5 +32,20 @@ pipeline {
                 }
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
+                sh 'docker images $IMAGE_NAME'
+            }
+        }
+
+        stage('Deploy to Staging') {
+            steps {
+                sh 'docker rm -f leave-service-staging || true'
+                sh 'docker run -d --name leave-service-staging -e APP_ENV=staging -p 8085:8080 $IMAGE_NAME:$IMAGE_TAG'
+                sh 'sleep 5 && curl -s http://localhost:8085'
+            }
+        }
     }
 }
