@@ -47,5 +47,21 @@ pipeline {
                 sh 'sleep 5 && curl -s http://localhost:8085'
             }
         }
+
+        stage('Approval') {
+            steps {
+                input message: 'Staging verified on http://localhost:8085. Deploy this image to production?',
+                      ok: 'Approve and deploy to production'
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                sh 'docker rm -f leave-service-production || true'
+                sh 'docker run -d --name leave-service-production -e APP_ENV=production -p 8086:8080 $IMAGE_NAME:$IMAGE_TAG'
+                sh 'sleep 5 && curl -s http://localhost:8086'
+                sh 'docker ps --filter name=leave-service --format "table {{.Names}}\\t{{.Image}}\\t{{.Ports}}"'
+            }
+        }
     }
 }
